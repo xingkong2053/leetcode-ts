@@ -20,7 +20,7 @@
 1 <= s.length <= 1000
 s 仅由数字和英文字母组成 */
 export function longestPalindrome(s: string): string {
-  return dynamic_planning_2(s);
+  return central_expansion(s);
 };
 
 // 动态规划
