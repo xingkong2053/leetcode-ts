@@ -26,5 +26,39 @@
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
 export function maxArea(height: number[]): number {
-  return 0;
+  return dualPointer(height);
 };
+
+function dualPointer(height: number[]): number{
+  const len = height.length;
+  if(len < 2){return 0}
+  const calc = (arr: number[], l: number, r: number) => Math.min(arr[l], arr[r]) * (r - l);
+
+  let max = calc(height, 0, len - 1), 
+    l = 0, r = len-1;
+  while(l<r){
+    if(height[l] < height[r]){
+      l ++  // 移动所示高度较小的那个指针
+    } else{
+      r --
+    }
+    let area = calc(height, l, r);
+    max = Math.max(max, area);
+  }
+  return max;
+}
+
+// 暴力法
+function simple(height: number[]): number{
+  const len = height.length;
+  if(len < 2){return 0}
+  const calc = (arr: number[], l: number, r: number) => Math.min(arr[l], arr[r]) * (r - l);
+
+  let max = 0;
+  for (let i = 0; i < len-1; i++) {
+    for(let j = i+1; j< len; j++){
+      max = Math.max(max, calc(height, i, j));
+    }
+  }
+  return max;
+}
