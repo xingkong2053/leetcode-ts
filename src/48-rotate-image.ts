@@ -27,6 +27,21 @@ n == matrix.length == matrix[i].length
 /**
  Do not return anything, modify matrix in-place instead.
  */
+/* 
+  [来源](https://leetcode.cn/problems/rotate-image/comments/)
+  情况一：顺时针转 90 度：先转置再左右镜像
+  1 2 3               7 4 1
+  4 5 6               8 5 2
+  7 8 9               9 6 3
+  情况二：顺时针转 180 度:先上下镜像，再左右镜像（先左右再上下也可）
+  1 2 3               9 8 7
+  4 5 6               6 5 4
+  7 8 9               3 2 1
+  情况三：顺时针转 270 度：先转置再上下镜像
+  1 2 3              3 6 9
+  4 5 6              2 5 8
+  7 8 9              1 4 7
+*/
 export function rotate(matrix: number[][]): void {
   const swap = (coor0: [number, number], coor1: [number, number]) => {
     [matrix[coor0[0]][coor0[1]], matrix[coor1[0]][coor1[1]]] = [matrix[coor1[0]][coor1[1]] ,matrix[coor0[0]][coor0[1]]]
