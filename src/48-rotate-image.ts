@@ -43,6 +43,10 @@ n == matrix.length == matrix[i].length
   7 8 9              1 4 7
 */
 export function rotate(matrix: number[][]): void {
+  rotate1(matrix);
+};
+
+function simple(matrix: number[][]): void{
   const swap = (coor0: [number, number], coor1: [number, number]) => {
     [matrix[coor0[0]][coor0[1]], matrix[coor1[0]][coor1[1]]] = [matrix[coor1[0]][coor1[1]] ,matrix[coor0[0]][coor0[1]]]
   } 
@@ -58,4 +62,31 @@ export function rotate(matrix: number[][]): void {
       swap([i, j], [len -i -1, j])
     }
   }
-};
+}
+
+// 四数交换
+function rotate1(matrix: number[][]): void {
+  let n = matrix.length;
+  const fourNumSwap = (x: number, y: number) =>{
+    const c0 = [x, y],
+      c1 = [y, n-x-1],
+      c2 = [n-x-1, n-y-1],
+      c3 = [n-y-1, x];
+    [
+      matrix[c0[0]][c0[1]],
+      matrix[c1[0]][c1[1]],
+      matrix[c2[0]][c2[1]],
+      matrix[c3[0]][c3[1]],
+    ] = [
+      matrix[c3[0]][c3[1]],
+      matrix[c0[0]][c0[1]],
+      matrix[c1[0]][c1[1]],
+      matrix[c2[0]][c2[1]],
+    ];
+  }
+  for(let i =0; i< Math.floor(n/2); i++){
+    for(let j = i; j< n -1 -i ;j++){
+      fourNumSwap(i, j)
+    }
+  }
+}
