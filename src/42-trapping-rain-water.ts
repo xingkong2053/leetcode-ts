@@ -24,5 +24,29 @@ n == height.length
 0 <= height[i] <= 105
 */
 export function trap(height: number[]): number {
-  return 0;
+  return dynamicPlaning(height);
 };
+
+function dynamicPlaning(height: number[]){
+  const len = height.length;
+  const sum = (nums: number[]) => nums.reduce((s, n)=>s+n,0);
+  //计算总体积
+  let vTotal = 0, 
+    ltr: number[] = new Array(len), 
+    rtl: number[] = new Array(len),
+    // 充满雨水之后的数组
+    rain: number[] = new Array(len);
+  ltr[0] = height[0]; 
+  for(let i = 1; i< len; i++){  
+    // tmp[i] = 下标i左侧数组最大值
+    ltr[i] = Math.max(height[i], height[i-1], ltr[i-1]);
+  }
+  rtl[len - 1] = height[len -1];
+  for(let i = len -2; i>=0; i--){
+    rtl[i] = Math.max(height[i], height[i+1], rtl[i+1]);
+  }
+  for(let i = 0; i< len; i++){
+    rain[i] = Math.min(ltr[i], rtl[i]);
+  }
+  return sum(rain) - sum(height);
+}
