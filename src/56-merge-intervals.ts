@@ -23,5 +23,19 @@ intervals[i].length == 2
 0 <= starti <= endi <= 104
 */
 export function merge(intervals: number[][]): number[][] {
-  return [];
+  const len = intervals.length;
+  // 对intervals按左端点排序
+  intervals.sort((pair1, pair2)=>pair1[0] - pair2[0]);
+  const result: [number, number][] = [];
+  result.push(intervals[0] as [number, number]);
+
+  for(let i = 1; i<len; i++){
+    const last = result[result.length-1];
+    if(intervals[i][0] <= last[1]){
+      last[1] = Math.max(last[1], intervals[i][1]);
+    } else {
+      result.push(intervals[i] as [number, number]);
+    }
+  }
+  return result;
 };
