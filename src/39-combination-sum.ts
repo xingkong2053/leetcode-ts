@@ -37,7 +37,8 @@ export function combinationSum(candidates: number[], target: number): number[][]
   const len = candidates.length;
   candidates.sort((a,b)=>a-b);
   let result: number[][] = [];
-  backtrace([], 0, { candidates, target, result });
+  // backtrace([], 0, { candidates, target, result });
+  backtrace2(candidates, [], result, 0, target);
   return result;
 };
 
@@ -57,5 +58,20 @@ function backtrace(temp: number[], startIdx: number, env: Env){
     for (let i = startIdx, len = env.candidates.length; i < len; i++) {
       backtrace([...temp, env.candidates[i]], i, env);    
     }
+  }
+}
+
+// 
+function backtrace2(candidates: number[], combine: number[], result: number[][], idx: number, target: number){
+  if(idx === candidates.length) return;
+  if(0 === target){
+    result.push([...combine]);
+    return;
+  }
+  // 跳过该数, 从下一个数开始
+  backtrace2(candidates, combine, result, idx + 1, target);
+  let cur = candidates[idx];
+  if(target >= cur){
+    backtrace2(candidates, [...combine, cur], result, idx, target - cur);
   }
 }
