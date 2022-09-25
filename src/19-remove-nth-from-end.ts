@@ -1,4 +1,4 @@
-import { ListNode } from "./data-stucture";
+import { ListNode } from "./data-structure";
 
 export function removeNthFromEnd(head: ListNode, n: number) {
   if (!head || n < 1) {

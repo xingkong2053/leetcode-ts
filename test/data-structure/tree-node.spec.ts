@@ -1,4 +1,4 @@
-import { TreeNode } from "data-stucture";
+import { TreeNode } from "data-structure";
 
 test('empty', ()=>{
   expect(TreeNode.fromArray([])).toEqual(null);

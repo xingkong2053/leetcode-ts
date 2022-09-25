@@ -24,7 +24,7 @@
 树中节点数目在范围 [0, 100] 内
 -100 <= Node.val <= 100
  */
-import { TreeNode } from "data-stucture";
+import { TreeNode } from "data-structure";
 export function inorderTraversal(root: TreeNode | null): number[] {
   return iteration(root);
 };
