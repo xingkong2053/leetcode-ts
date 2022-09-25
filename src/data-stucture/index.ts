@@ -1,3 +1,5 @@
+export { TreeNode } from "./tree-node";
+
 export class ListNode {
   val: number;
   next: ListNode | null;
