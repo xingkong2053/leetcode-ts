@@ -28,7 +28,18 @@
 -231 <= Node.val <= 231 - 1
  */
 import { TreeNode } from "data-structure";
-
+// TODO 迭代法
 export function isValidBST(root: TreeNode | null): boolean {
-  return false;
+  return recursive(root);
+};
+
+function recursive(
+  root: TreeNode | null, 
+  range: [number, number] = [-Infinity, Infinity]
+): boolean {
+  if(!root) return true;
+  return root.val > range[0] 
+    && root.val < range[1]
+    && recursive(root.left, [range[0], root.val])
+    && recursive(root.right, [root.val, range[1]]);
 };
