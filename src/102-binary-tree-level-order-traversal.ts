@@ -53,12 +53,16 @@ function recursive(node: TreeNode | null, i: number, arr: number[][]): void{
 
 function iteration(root: TreeNode | null, result: number[][]){
   if(!root) return;
-  const queue: [TreeNode, number][] = [];
-  queue.push([root, 0]);
-  while(queue.length){
-    const node = queue.shift() as [TreeNode, number];
-    result[node[1]] = [...(result[node[1]] || []), node[0].val];
-    if(node[0].left) queue.push([node[0].left, node[1] + 1]);
-    if(node[0].right) queue.push([node[0].right, node[1] + 1]);
+  const queue: TreeNode[] = [];
+  queue.push(root);
+  let cnt = 0, len = 0;
+  while((len = queue.length)){
+    for(let i = 0; i<len; i++){
+      const node = queue.shift() as TreeNode;
+      result[cnt] = [...(result[cnt] || []), node.val];
+      if(node.left) queue.push(node.left);
+      if(node.right) queue.push(node.right);
+    }
+    cnt ++;
   }
 }
