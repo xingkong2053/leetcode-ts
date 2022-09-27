@@ -40,7 +40,7 @@
 import { TreeNode } from "data-structure";
 export function levelOrder(root: TreeNode | null): number[][] {
   const result: number[][] = [];
-  recursive(root, 0, result);
+  iteration(root, result);
   return result;
 };
 
@@ -50,3 +50,15 @@ function recursive(node: TreeNode | null, i: number, arr: number[][]): void{
   recursive(node.left, i + 1, arr);
   recursive(node.right, i + 1, arr);
 };
+
+function iteration(root: TreeNode | null, result: number[][]){
+  if(!root) return;
+  const queue: [TreeNode, number][] = [];
+  queue.push([root, 0]);
+  while(queue.length){
+    const node = queue.shift() as [TreeNode, number];
+    result[node[1]] = [...(result[node[1]] || []), node[0].val];
+    if(node[0].left) queue.push([node[0].left, node[1] + 1]);
+    if(node[0].right) queue.push([node[0].right, node[1] + 1]);
+  }
+}
