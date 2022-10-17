@@ -39,7 +39,8 @@ import { TreeNode } from "data-structure";
 
 export function isSymmetric(root: TreeNode | null): boolean {
   root = root as TreeNode;
-  return recursive(root.left, root.right);
+  // return recursive(root.left, root.right);
+  return iteration(root);
 };
 
 function recursive(nodeL: TreeNode| null, nodeR: TreeNode | null): boolean{
@@ -48,4 +49,22 @@ function recursive(nodeL: TreeNode| null, nodeR: TreeNode | null): boolean{
   return nodeL.val === nodeR.val 
     && recursive(nodeL.left, nodeR.right)
     && recursive(nodeL.right, nodeR.left);
+}
+
+function iteration(root: TreeNode): boolean{
+  const queue: (TreeNode | null)[] = [];
+  queue.push(root.left);
+  queue.push(root.right);
+  while(queue.length >= 2){
+    let o1 = queue.shift();
+    let o2 = queue.shift();
+    if(!o1 && !o2){ continue; }
+    if(!o1 || !o2){ return false; }
+    if(o1.val !== o2.val) return false;
+    queue.push(o1.left);
+    queue.push(o2.right);
+    queue.push(o1.right);
+    queue.push(o2.left);
+  }
+  return true;
 }
