@@ -37,36 +37,104 @@ lRUCache.get(4);    // 返回 4
 0 <= value <= 105
 最多调用 2 * 105 次 get 和 put
 */
-// TODO 双向链表 + hash表
+class LNode<T>{
+  val?: T;
+  prev: LNode<T> | null
+  next: LNode<T> | null
+  constructor(val?: T){
+    this.val = val;
+    this.prev = null;
+    this.next = null;
+  }
+}
+
+/**
+ * 双向链表
+ */
+class List<T>{
+  head: LNode<T>;
+  tail: LNode<T>;
+  _size: number;
+  constructor(){
+    this._size = 0;
+    this.head = new LNode();
+    this.tail = new LNode();
+    this.head.next = this.tail;
+    this.tail.prev = this.head;
+  }
+  unshift(nodeOrVal: T | LNode<T>){
+    let node;
+    if(nodeOrVal instanceof LNode){
+      node = nodeOrVal
+    } else {
+      node = new LNode(nodeOrVal);
+    }
+    ;(this.head.next as LNode<T>).prev = node;
+    node.next = this.head.next;
+    this.head.next = node;
+    node.prev = this.head;
+    this._size ++;
+    return node;
+  }
+  pop(){
+    if(!this._size) return null;
+    const target = this.tail.prev as LNode<T>
+    const prevNode = target.prev as LNode<T>;
+    prevNode.next = this.tail;
+    this.tail.prev = prevNode;
+    this._size--;
+    return target.val as T
+  }
+  del(node: LNode<T>){
+    const next = node.next as LNode<T>;
+    const prev = node.prev as LNode<T>;
+    next.prev = prev;
+    prev.next = next;
+    this._size -- ;
+  }
+  get size(){
+    return this._size;
+  }
+}
+
+interface KeyVal{
+  key: number;
+  value: number;
+}
+
 export class LRUCache {
-  private keys: number[];
-  private m : Map<number, number>;
+  private keys: List<KeyVal>;
+  private m : Map<number, LNode<KeyVal>>;
   private cap : number;
   constructor(capacity: number) {
-    this.keys = [];
+    this.keys = new List();
     this.m = new Map();
     this.cap = capacity;
   }
-
   get(key: number): number {
-    const val = this.m.get(key) || -1
-    if(val !== -1){
-      const idx = this.keys.findIndex(item=>item === key);
-      this.keys.splice(idx, 1);
-      this.keys.unshift(key);
+    const node = this.m.get(key)
+    if(node){
+      this.keys.del(node);
+      this.keys.unshift(node);
+      return (node.val as KeyVal).value;
+    } else {
+      return -1;
     }
-    return val;
   }
-
   put(key: number, value: number): void {
     if(!this.m.has(key)) { //新增
-      if(this.keys.length === this.cap){  // 满
-        const last = this.keys[this.cap - 1];
-        this.keys.shift();
-        this.m.delete(last);  
+      if(this.keys.size === this.cap){  // 满
+        const target = this.keys.pop() as KeyVal;
+        this.m.delete(target.key);
       }
-      this.keys.push(key)
+      const node = this.keys.unshift({key, value});
+      this.m.set(key, node);
+    } else {
+      const node = this.m.get(key) as LNode<KeyVal>;
+      ;(node.val as KeyVal).value = value
+      // 将node提到列表的前面
+      this.keys.del(node);
+      this.keys.unshift(node);
     }
-    this.m.set(key, value);
   }
 }
