@@ -1,4 +1,5 @@
 export { TreeNode } from "./tree-node";
+export { BinarySearchTree } from "./binary-search-tree";
 
 export class ListNode {
   val: number;
