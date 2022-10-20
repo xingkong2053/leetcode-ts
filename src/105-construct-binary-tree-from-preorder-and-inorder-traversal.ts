@@ -28,10 +28,13 @@ inorder 保证 为二叉树的中序遍历序列
 import { TreeNode } from "data-structure";
 export function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
   let n = preorder.length;
+  const m: Record<number, number> = {};
+  let i = 0;
+  while(i<n){m[inorder[i]] = i++;}
   const build = (pl: number, pr: number, il: number, ir: number) => {
     if(pl === pr) return null;
     const node = new TreeNode(preorder[pl]);
-    const im = inorder.findIndex(value=>value === preorder[pl]);
+    const im = m[preorder[pl]];
     node.left = build(pl + 1, im - il + pl +1, il, im);
     node.right = build(im - il + pl +1, pr, im + 1, ir);
     return node;
