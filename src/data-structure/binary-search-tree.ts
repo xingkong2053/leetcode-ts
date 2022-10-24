@@ -57,7 +57,16 @@ export class BinarySearchTree{
       ptr = node.right;
     }
   }
-  preOrderTraverse():void{}
+  preOrderTraverse(callback: (key: number)=>void):void{
+    if(!this.root) return;
+    const stack: TreeNode<number>[] = [this.root];
+    while(stack.length){
+      const node = stack.pop() as TreeNode<number>;
+      callback(node.value);
+      node.right && stack.push(node.right);
+      node.left && stack.push(node.left);
+    }
+  }
   postOrderTraverse():void{}
   min():number{return 0;}
   max():number{return 0;}
